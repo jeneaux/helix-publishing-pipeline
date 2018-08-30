@@ -5,7 +5,7 @@
 $fixtures = @{
     default = @{
         Solution = "$PSScriptRoot\fixtures/default/HelixBuild.Sample.Web.sln";
-        Project1 = "$PSScriptRoot\fixtures/default/Projects\HelixBuild.Sample.Web\HelixBuild.Sample.Web.csproj";
+        Project1 = "$PSScriptRoot\fixtures/default/Projects\HelixBuild.Sample.Web\code\HelixBuild.Sample.Web.csproj";
     }
     
 }
@@ -24,6 +24,7 @@ Describe "Module configuration" {
             "DeployOnBuild" = "true";
             "PublishProfile" = "Package";
             "DeployAsIisApp" = "false";
+            "IncludeAdditionalHelixModulesContent" = "true";
         }
 
         $packageFilename = Join-Path $projectDir "obj\Debug\Package\HelixBuild.Sample.Web.zip"
@@ -53,6 +54,14 @@ Describe "Module configuration" {
             $packageFiles -contains "App_Config\Include\HelixBuild.Feature1.config" | Should Be $true  
         }
 
+        It "should include additional module content that have been specified by path" {
+            $packageFiles -contains "assets\feature1.js" | Should Be $true
+        }
+
+        It "should not include additional module content that have been specified by path from indirect module dependencies" {
+            $packageFiles -contains "assets\foundation.js" | Should Be $false
+        }
+
         It "should not include content from indirect module dependencies" {
             $packageFiles -contains "App_Config\Include\HelixBuild.Foundation1.config" | Should Be $false
         }
@@ -62,7 +71,7 @@ Describe "Module configuration" {
         }
 
         It "should not include other Web.config from the packaged project" {
-            $publishedFiles -contains ".\Views\Web.config" | Should Be $false
+            $packageFiles -contains "Views\Web.config" | Should Be $false
         }
 
         # The default pipeline excludes config transforms, even if they are marked as Content
@@ -72,6 +81,7 @@ Describe "Module configuration" {
 
         It "should prevent downstream publish profiles from being imported" {
             # If the publish succeeds then this test passes, as Feature1 contains a malformed Package.pubxml
+            $true | Should Be $true
         }
     }
 }

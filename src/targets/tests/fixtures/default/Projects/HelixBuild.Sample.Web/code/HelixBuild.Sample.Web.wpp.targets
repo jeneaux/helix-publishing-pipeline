@@ -1,0 +1,28 @@
+<Project>
+    <ItemGroup Condition="'$(HelixTargetsConfiguration)'=='Module'">
+        <ExcludeFromPackageFiles Include="Web.config" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(IncludeAdditionalHelixModulesContent)' == 'true'">
+        <AdditionalFilesForPackagingFromHelixModules Include="$([MSBuild]::Escape('assets\**\*'))" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(ExternalWebConfigLocation)' != ''">
+        <ReplacementFilesForPackaging Include="$(ExternalWebConfigLocation)">
+            <DestinationRelativePath>Web.config</DestinationRelativePath>
+        </ReplacementFilesForPackaging>
+    </ItemGroup>
+
+    <!-- You probably wouldn't use assembly lists to exclude your own projects, but it gives us something to test -->
+    <ItemGroup Condition="'$(IncludeFeatureAssemblyList)' == 'true'">
+        <SitecoreAssemblyListsToExclude Include="AssemblyLists\FeatureList.txt" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(WhitelistFeatureAssembly)' == 'true'">
+        <SitecoreAssembliesToInclude Include="HelixBuild.Feature1.dll" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(IncludeFoundationAssemblyList)' == 'true'">
+        <SitecoreAssemblyListsToExclude Include="AssemblyLists\FeatureList.txt" />
+    </ItemGroup>
+</Project>

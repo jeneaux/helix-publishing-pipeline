@@ -5,7 +5,7 @@
 $fixtures = @{
     default = @{
         Solution = "$PSScriptRoot\fixtures/default/HelixBuild.Sample.Web.sln";
-        Project1 = "$PSScriptRoot\fixtures/default/Projects\HelixBuild.Sample.Web\HelixBuild.Sample.Web.csproj";
+        Project1 = "$PSScriptRoot\fixtures/default/Projects\HelixBuild.Sample.Web\code\HelixBuild.Sample.Web.csproj";
     }
     
 }
@@ -77,6 +77,10 @@ Describe "WebRoot configuration" {
 
         It "should include Web.Helix.config transforms from feature modules" {
             (Get-WebConfigAppSetting $webConfigXml "Feature1.ConfigKey") | Should Be "Feature1.ConfigValue"
+        }
+
+        It "should not include merged Web.Helix.config transform" {
+            $packageFiles -contains "Web.Helix.config" | Should Be $false
         }
 
         It "should not include Web.Helix.config transforms from indirect module dependencies" {
