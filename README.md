@@ -75,7 +75,7 @@ To exclude assemblies from publish, simply add either assembly lists or individu
 
   <!-- Or individual assemblies -->
   <SitecoreAssembliesToExclude Include="Sitecore.Kernel.dll" />
-</ItemGroup>>
+</ItemGroup>
 ```
 
 Individual assemblies can also be whitelisted (for example, if a patched version is included with the application):
@@ -83,8 +83,8 @@ Individual assemblies can also be whitelisted (for example, if a patched version
 ```xml
 <!-- In ProjectName.wpp.targets or PublishProfile.wpp.targets -->
 <ItemGroup>
-  <SitecoreAssembliesToInclude Include="System.Web.Mvc.dll" />/>
-</ItemGroup>>
+  <SitecoreAssembliesToInclude Include="System.Web.Mvc.dll" />
+</ItemGroup>
 ```
 
 ## Extensibility
